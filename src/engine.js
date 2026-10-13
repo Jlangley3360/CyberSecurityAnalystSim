@@ -2,15 +2,17 @@ export const actions = {
   quarantine: 'Quarantine the email', reset: 'Reset credentials and revoke sessions',
   isolate: 'Isolate the endpoint', block: 'Block confirmed indicators',
   escalate: 'Escalate to incident response', educate: 'Provide user guidance',
-  support: 'Route to IT support', monitor: 'Monitor without containment'
+  support: 'Route to IT support', monitor: 'Monitor without containment',
+  revoke: 'Revoke unauthorized access, grants, keys, rules, or permissions'
 };
 export function freshCase() { return { status: 'new', notes: '', evidence: [], hints: 0, draft: { verdict: '', category: '', actions: [], summary: '' }, result: null }; }
 export function grade(scenario, draft, evidence = []) {
   const answer = scenario.answer;
   const verdict = draft.verdict === answer.verdict ? 30 : 0;
   const category = draft.category === scenario.category ? 15 : 0;
-  const correct = draft.actions.filter(a => answer.actions.includes(a));
-  const extra = draft.actions.filter(a => !answer.actions.includes(a));
+  const selectedActions = [...new Set(draft.actions)];
+  const correct = selectedActions.filter(a => answer.actions.includes(a));
+  const extra = selectedActions.filter(a => !answer.actions.includes(a));
   const response = Math.max(0, Math.round(25 * correct.length / answer.actions.length) - extra.length * 5);
   const cited = answer.evidence.filter(id => evidence.includes(id));
   const investigation = Math.round(20 * cited.length / answer.evidence.length);

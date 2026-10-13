@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 const root = fileURLToPath(new URL('.', import.meta.url));
 const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json' };
-const allowed = new Set(['/index.html', '/styles.css', '/src/app.js', '/src/cases.js', '/src/engine.js']);
+const allowed = new Set(['/index.html', '/styles.css', '/src/app.js', '/src/cases.js', '/src/engine.js', '/src/training-pack.js', '/src/persistence.js']);
 http.createServer(async (req, res) => {
   try {
     const pathname = new URL(req.url, 'http://localhost').pathname;

@@ -1,7 +1,8 @@
+import { trainingPack } from './training-pack.js';
 // All people, organizations, events, domains and artifacts are fictional training data.
 const ev = (id, tool, time, title, detail) => ({ id, tool, time, title, detail });
-export const categories = ['Phishing', 'Identity', 'Malware', 'End-user support'];
-export const cases = [
+export const categories = ['Phishing', 'Identity', 'Malware', 'Network', 'Data protection', 'Cloud', 'Web application', 'Endpoint', 'End-user support', 'Insider risk'];
+const originalCases = [
   {
     id: 'SOC-1042', title: 'Payroll verification email', category: 'Phishing', severity: 'High', source: 'Email security', user: 'Maya Chen', host: 'FIN-014', time: '09:12',
     description: 'An employee reported a message asking them to verify their payroll account before noon. Investigate delivery, authenticity, and whether the employee interacted with it.',
@@ -73,3 +74,4 @@ export const cases = [
     answer: { verdict: 'malicious', actions: ['block', 'educate'], evidence: ['b1', 'b2', 'b3'], explanation: 'The page is a malicious technical-support scam, but the evidence does not establish ransomware execution or endpoint compromise. Block the confirmed scam domain and guide the employee to close the page without calling, paying, or granting access. If interaction or new endpoint evidence appears, reassess and escalate as appropriate.' }
   }
 ];
+export const cases = [...originalCases.map((c, i) => ({ ...c, difficulty: ['Beginner', 'Intermediate', 'Intermediate', 'Beginner', 'Beginner'][i] })), ...trainingPack];
