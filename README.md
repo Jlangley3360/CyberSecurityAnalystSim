@@ -1,4 +1,4 @@
-# Analyst Lab
+# CyberSecurityAnalystSim — Analyst Lab
 
 A free, local, single-user cybersecurity analyst practice app inspired by SOC investigation workflows. All organizations, users, logs, and artifacts are fictional. No third-party services or accounts are required.
 
