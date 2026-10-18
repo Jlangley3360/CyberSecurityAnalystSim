@@ -1,3 +1,4 @@
+import { actionFeedback } from './response-feedback.js';
 export const actions = {
   quarantine: 'Quarantine the email', reset: 'Reset credentials and revoke sessions',
   isolate: 'Isolate the endpoint', block: 'Block confirmed indicators',
@@ -12,12 +13,13 @@ export function grade(scenario, draft, evidence = []) {
   const category = draft.category === scenario.category ? 15 : 0;
   const selectedActions = [...new Set(draft.actions)];
   const correct = selectedActions.filter(a => answer.actions.includes(a));
-  const extra = selectedActions.filter(a => !answer.actions.includes(a));
+  const coaching = actionFeedback(scenario, selectedActions);
+  const extra = coaching.filter(a => a.status === 'unsupported').map(a => a.action);
   const response = Math.max(0, Math.round(25 * correct.length / answer.actions.length) - extra.length * 5);
   const cited = answer.evidence.filter(id => evidence.includes(id));
   const investigation = Math.round(20 * cited.length / answer.evidence.length);
   const documentation = draft.summary.trim().length >= 80 ? 10 : draft.summary.trim().length >= 20 ? 5 : 0;
-  return { score: verdict + category + response + investigation + documentation, parts: { verdict, category, response, investigation, documentation }, missingActions: answer.actions.filter(a => !draft.actions.includes(a)), extraActions: extra, missingEvidence: answer.evidence.filter(id => !evidence.includes(id)) };
+  return { score: verdict + category + response + investigation + documentation, parts: { verdict, category, response, investigation, documentation }, missingActions: answer.actions.filter(a => !draft.actions.includes(a)), extraActions: extra, actionFeedback: coaching, missingEvidence: answer.evidence.filter(id => !evidence.includes(id)) };
 }
 export function closeCase(scenario, state) {
   if (state.status !== 'active') throw new Error('Claim this alert before closing it.');
